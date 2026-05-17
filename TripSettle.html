@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="TripSettle"/>
+  <meta name="theme-color" content="#0d1117"/>
+  <title>TripSettle ✈️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#0d1117;color:#e6edf3;font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+    input,button,select,textarea{font-family:'DM Sans',sans-serif}
+    input:focus,textarea:focus{outline:none}
+    button{cursor:pointer;border:none}
+    ::placeholder{color:#484f58}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-thumb{background:#30363d;border-radius:4px}
+
+    #app{min-height:100vh;display:flex;flex-direction:column;align-items:center}
+    .wrap{width:100%;max-width:460px;padding-bottom:110px}
+
+    /* HEADER */
+    .header{padding:52px 20px 20px;border-bottom:1px solid #21262d;position:relative;overflow:hidden}
+    .hglow{position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#4ECDC430 0%,transparent 70%);pointer-events:none}
+    .htag{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:#4ECDC4;text-transform:uppercase;margin-bottom:6px}
+    .htitle{font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;line-height:1.1;letter-spacing:-.5px}
+    .htitle span{color:#4ECDC4}
+    .htrip{margin-top:10px;display:flex;align-items:center;gap:8px}
+    .htrip-name{font-family:'Outfit',sans-serif;font-weight:800;font-size:17px;color:#4ECDC4;cursor:pointer}
+    .htrip-edit{font-size:13px;color:#484f58;cursor:pointer}
+    .stats{margin-top:14px;display:flex;gap:8px}
+    .stat{flex:1;background:#161b22;border-radius:10px;padding:9px 10px;border:1px solid #21262d}
+    .stat-l{font-size:10px;color:#484f58;margin-bottom:2px}
+    .stat-v{font-family:'Outfit',sans-serif;font-weight:800;font-size:15px}
+    .stat-v.ac{color:#4ECDC4}
+
+    /* SHARE BAR */
+    .share-bar{display:flex;gap:8px;padding:12px 20px;border-bottom:1px solid #21262d;background:#0d1117}
+    .share-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-weight:700;font-size:13px;border:1.5px solid}
+
+    /* TABS */
+    .tabs{display:flex;border-bottom:1px solid #21262d;background:#0d1117;position:sticky;top:0;z-index:10}
+    .tab{flex:1;padding:12px 4px;background:none;border:none;border-bottom:2px solid transparent;color:#484f58;font-weight:500;font-size:12px;transition:all .2s}
+    .tab.active{color:#4ECDC4;border-bottom-color:#4ECDC4;font-weight:700}
+
+    .content{padding:18px 16px}
+
+    /* FAMILY BLOCK */
+    .fam-block{background:#161b22;border-radius:16px;border:1px solid #21262d;margin-bottom:12px;overflow:hidden}
+    .fam-hdr{display:flex;align-items:center;gap:10px;padding:13px 13px 8px}
+    .fam-emoji{font-size:20px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:#21262d;border-radius:10px;flex-shrink:0}
+    .fam-info{flex:1}
+    .fam-name{font-family:'Outfit',sans-serif;font-weight:800;font-size:15px}
+    .fam-sub{font-size:11px;color:#484f58;margin-top:2px}
+    .fam-members{padding:0 13px 8px;display:flex;flex-direction:column;gap:5px}
+    .mem-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#0d1117;border-radius:10px}
+    .mini-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:11px;text-transform:uppercase;flex-shrink:0}
+    .mem-name{flex:1;font-size:13px;font-weight:500}
+    .mem-bal{font-size:12px;font-weight:700}
+    .rm{background:none;border:none;color:#484f58;font-size:18px;line-height:1;padding:2px 4px}
+    .add-mem-row{display:flex;gap:6px;padding:0 13px 13px}
+    .mini-in{flex:1;background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:8px 12px;color:#e6edf3;font-size:13px}
+    .mini-add{background:#4ECDC422;color:#4ECDC4;border:1px solid #4ECDC444;border-radius:10px;padding:8px 14px;font-weight:800;font-size:16px}
+
+    .in-row{display:flex;gap:8px;margin-bottom:14px}
+    .main-in{flex:1;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:11px 14px;color:#e6edf3;font-size:14px}
+    .add-btn{background:#4ECDC4;color:#0d1117;border-radius:12px;padding:11px 18px;font-weight:800;font-size:18px}
+
+    /* EXPENSE CARD */
+    .exp-card{background:#161b22;border-radius:14px;border:1px solid #21262d;padding:13px;display:flex;gap:10px;align-items:flex-start;margin-bottom:9px}
+    .exp-ic{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:#21262d;border-radius:11px;flex-shrink:0}
+    .exp-body{flex:1;min-width:0}
+    .exp-title{font-weight:700;font-size:14px;margin-bottom:3px}
+    .exp-meta{font-size:11px;color:#484f58;margin-bottom:5px}
+    .exp-tags{display:flex;flex-wrap:wrap;gap:3px}
+    .tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:600}
+    .exp-r{text-align:right;flex-shrink:0}
+    .exp-amt{font-family:'Outfit',sans-serif;font-weight:800;font-size:17px}
+    .add-exp-btn{width:100%;padding:12px;border-radius:13px;background:#4ECDC411;border:1.5px dashed #4ECDC455;color:#4ECDC4;font-weight:700;font-size:14px;margin-bottom:14px}
+
+    /* SETTLE */
+    .settle-card{background:#161b22;border-radius:16px;border:1px solid #21262d;padding:15px;display:flex;align-items:center;gap:10px;margin-bottom:9px}
+    .settle-mid{flex:1;text-align:center}
+    .settle-arr{color:#484f58;font-size:16px;margin-bottom:1px}
+    .settle-amt{font-family:'Outfit',sans-serif;font-weight:900;font-size:19px}
+    .fam-settle{background:#161b22;border-radius:14px;border:1px solid #21262d;margin-bottom:10px;overflow:hidden}
+    .fam-settle-hdr{padding:11px 13px;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:8px}
+    .fam-settle-body{padding:11px 13px}
+    .pbadge{min-width:60px}
+    .pbadge.r{text-align:right}
+    .bav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:17px;text-transform:uppercase;margin-bottom:3px}
+    .bav.r{margin-left:auto}
+    .bname{font-size:11px;font-weight:600;color:#484f58;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px}
+
+    .empty{text-align:center;padding:44px 20px;color:#484f58}
+    .empty-e{font-size:38px;margin-bottom:10px}
+    .slabel{font-size:11px;font-weight:700;color:#484f58;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+
+    /* MODAL */
+    .overlay{position:fixed;inset:0;background:#000c;display:flex;align-items:flex-end;justify-content:center;z-index:100}
+    .modal{width:100%;max-width:460px;background:#161b22;border-radius:20px 20px 0 0;padding:22px 18px 50px;border:1px solid #21262d;max-height:92vh;overflow-y:auto}
+    .modal-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:19px;margin-bottom:18px}
+    .flabel{font-size:11px;font-weight:700;color:#484f58;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+    .fin{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:11px;padding:11px 13px;color:#e6edf3;font-size:14px;margin-bottom:14px;display:block}
+    .chip-grp{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+    .chip{padding:7px 13px;border-radius:10px;border:1.5px solid #30363d;background:#0d1117;color:#484f58;font-size:13px}
+    .mact{display:flex;gap:8px;margin-top:6px}
+    .cbtn{flex:1;padding:13px;border-radius:12px;border:1px solid #30363d;background:none;color:#484f58;font-weight:600;font-size:14px}
+    .sbtn{flex:2;padding:13px;border-radius:12px;background:#4ECDC4;color:#0d1117;font-weight:800;font-size:14px;border:none}
+    .pp{font-size:12px;color:#484f58;margin-bottom:14px;margin-top:-8px}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#4ECDC4;color:#0d1117;padding:10px 20px;border-radius:99px;font-weight:700;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;white-space:nowrap}
+    .toast.show{opacity:1}
+
+    /* TRIP MODAL */
+    .trip-modal{position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+    .trip-box{background:#161b22;border-radius:20px;padding:24px;width:100%;max-width:380px;border:1px solid #21262d}
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="wrap">
+    <div class="header">
+      <div class="hglow"></div>
+      <div class="htag">✈️ Trip Settle</div>
+      <div class="htitle">Кто кому<br><span>сколько должен</span></div>
+      <div class="htrip" id="trip-display"></div>
+      <div class="stats" id="stats" style="display:none">
+        <div class="stat"><div class="stat-l">Семей</div><div class="stat-v" id="s-fam">0</div></div>
+        <div class="stat"><div class="stat-l">Людей</div><div class="stat-v" id="s-ppl">0</div></div>
+        <div class="stat"><div class="stat-l">Расходов</div><div class="stat-v" id="s-exp">0</div></div>
+        <div class="stat"><div class="stat-l">Итого</div><div class="stat-v ac" id="s-tot">€0</div></div>
+      </div>
+    </div>
+
+    <div class="share-bar">
+      <button class="share-btn" style="color:#4ECDC4;border-color:#4ECDC433;background:#4ECDC410" onclick="shareLink()">🔗 Поделиться</button>
+      <button class="share-btn" style="color:#6BCB77;border-color:#6BCB7733;background:#6BCB7710" onclick="saveLocal()">💾 Сохранить</button>
+      <button class="share-btn" style="color:#FFD93D;border-color:#FFD93D33;background:#FFD93D10" onclick="newTrip()">✈️ Новая</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="people" onclick="switchTab('people')">👨‍👩‍👧 Люди</button>
+      <button class="tab" data-tab="expenses" onclick="switchTab('expenses')">💸 Расходы</button>
+      <button class="tab" data-tab="settle" onclick="switchTab('settle')">✅ Итог</button>
+    </div>
+
+    <div class="content">
+      <div id="tab-people"></div>
+      <div id="tab-expenses" style="display:none"></div>
+      <div id="tab-settle" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Expense Modal -->
+<div class="overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">Новый расход</div>
+    <div class="flabel">Категория</div>
+    <div class="chip-grp" id="cat-chips"></div>
+    <div class="flabel">Название</div>
+    <input class="fin" id="f-title" placeholder="Название..."/>
+    <div class="flabel">Сумма (€)</div>
+    <input class="fin" id="f-amount" type="number" placeholder="0.00" oninput="updatePP()"/>
+    <div class="flabel">Кто платил</div>
+    <div class="chip-grp" id="paidby-chips"></div>
+    <div class="flabel">За кого разбить</div>
+    <div id="part-section"></div>
+    <div class="pp" id="pp"></div>
+    <div class="mact">
+      <button class="cbtn" onclick="closeModal()">Отмена</button>
+      <button class="sbtn" onclick="saveExpense()">Добавить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Trip Name Modal -->
+<div class="trip-modal" id="trip-modal" style="display:none">
+  <div class="trip-box">
+    <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:19px;margin-bottom:16px">✈️ Название поездки</div>
+    <input class="fin" id="trip-name-in" placeholder="Например: Рига → Барселона 2025" style="margin-bottom:8px"/>
+    <div style="display:flex;gap:8px">
+      <button class="cbtn" onclick="closeTripModal()">Отмена</button>
+      <button class="sbtn" onclick="saveTripName()">Готово</button>
+    </div>
+  </div>
+</div>
+
+<!-- Share Modal -->
+<div class="trip-modal" id="share-modal" style="display:none">
+  <div class="trip-box">
+    <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:17px;margin-bottom:8px">🔗 Поделиться поездкой</div>
+    <div style="font-size:13px;color:#484f58;margin-bottom:14px">Отправь эту ссылку — друзья увидят все расходы и расчёты</div>
+    <textarea id="share-url" readonly style="width:100%;background:#0d1117;border:1px solid #30363d;border-radius:11px;padding:11px;color:#4ECDC4;font-size:12px;resize:none;height:80px;word-break:break-all"></textarea>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="cbtn" onclick="closeShareModal()">Закрыть</button>
+      <button class="sbtn" onclick="copyLink()">📋 Копировать</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const COLORS=["#4ECDC4","#FF6B9D","#FFD93D","#6BCB77","#4D96FF","#FF922B","#CC5DE8","#F06595","#74C0FC","#A9E34B"];
+const CATS=[{e:"🏨",l:"Отель"},{e:"🚗",l:"Машина"},{e:"⛽",l:"Бензин"},{e:"🍕",l:"Еда"},{e:"🎟️",l:"Активности"},{e:"✈️",l:"Перелёт"},{e:"🛒",l:"Покупки"},{e:"🍺",l:"Бар"}];
+const FAM_EMOJIS=["👨‍👩‍👧","👫","🧑‍🤝‍🧑","👨‍👦","👩‍👧","🧑","🏠","⛺","👴","👩"];
+
+let tripName="", families=[], people=[], expenses=[];
+let fid=1,pid=1,eid=1,currentTab="people";
+let fCat=CATS[0],fPaidBy=null,fParts=[];
+
+// ---- COLORS ----
+function famColor(id){const i=families.findIndex(f=>f.id===id);return i>=0?COLORS[i%COLORS.length]:"#888"}
+function personColor(id){const p=people.find(x=>x.id===id);return p?famColor(p.familyId):"#888"}
+function getPerson(id){return people.find(p=>p.id===id)}
+function getFamily(id){return families.find(f=>f.id===id)}
+function famMembers(fid){return people.filter(p=>p.familyId===fid)}
+
+// ---- SETTLE ----
+function settle(){
+  const pBal={};people.forEach(p=>{pBal[p.id]=0});
+  expenses.forEach(exp=>{
+    const parts=exp.participants.filter(id=>people.find(p=>p.id===id));
+    if(!parts.length)return;
+    const share=exp.amount/parts.length;
+    parts.forEach(id=>{pBal[id]-=share});
+    if(pBal[exp.paidBy]!==undefined)pBal[exp.paidBy]+=exp.amount;
+  });
+  const fBal={};
+  families.forEach(f=>{fBal[f.id]=famMembers(f.id).reduce((s,p)=>s+(pBal[p.id]||0),0)});
+  const txns=[];
+  const bal=families.map(f=>({id:f.id,amt:fBal[f.id]||0}));
+  for(let i=0;i<200;i++){
+    bal.sort((a,b)=>a.amt-b.amt);
+    const d=bal[0],c=bal[bal.length-1];
+    if(!d||!c||d.amt>=-0.01||c.amt<=0.01)break;
+    const amt=Math.min(-d.amt,c.amt);
+    if(amt<0.01)break;
+    txns.push({from:d.id,to:c.id,amount:amt});
+    d.amt+=amt;c.amt-=amt;
+  }
+  return{pBal,fBal,txns};
+}
+
+// ---- RENDER ----
+function render(){
+  updateStats();updateTripDisplay();
+  if(currentTab==="people")renderPeople();
+  else if(currentTab==="expenses")renderExpenses();
+  else renderSettle();
+}
+
+function updateStats(){
+  const tot=expenses.reduce((s,e)=>s+e.amount,0);
+  document.getElementById("s-fam").textContent=families.length;
+  document.getElementById("s-ppl").textContent=people.length;
+  document.getElementById("s-exp").textContent=expenses.length;
+  document.getElementById("s-tot").textContent="€"+tot.toFixed(0);
+  document.getElementById("stats").style.display=families.length>0?"flex":"none";
+}
+
+function updateTripDisplay(){
+  const el=document.getElementById("trip-display");
+  if(tripName){
+    el.innerHTML=`<div class="htrip-name" onclick="openTripModal()">📍 ${esc(tripName)}</div><div class="htrip-edit" onclick="openTripModal()">✏️</div>`;
+  } else {
+    el.innerHTML=`<div class="htrip-edit" onclick="openTripModal()" style="color:#4ECDC4;font-size:13px;font-weight:600">+ Назвать поездку</div>`;
+  }
+}
+
+function renderPeople(){
+  const {pBal,fBal}=settle();
+  const el=document.getElementById("tab-people");
+  let html=`<div class="in-row">
+    <input class="main-in" id="fam-in" placeholder="Семья или группа..." onkeydown="if(event.key==='Enter')addFamily()"/>
+    <button class="add-btn" onclick="addFamily()">+</button>
+  </div>`;
+  if(!families.length){
+    html+=`<div class="empty"><div class="empty-e">👨‍👩‍👧</div><div>Добавь семью или группу<br><span style="font-size:12px;opacity:.6">«Семья Смит», «Андрей», «Пара»</span></div></div>`;
+    el.innerHTML=html;return;
+  }
+  const hasExp=expenses.length>0;
+  families.forEach((fam,fi)=>{
+    const fc=COLORS[fi%COLORS.length];
+    const members=famMembers(fam.id);
+    const fb=fBal[fam.id]||0;
+    const fbTxt=hasExp?(fb>0.01?`+€${fb.toFixed(2)}`:fb<-0.01?`-€${Math.abs(fb).toFixed(2)}`:"±€0"):"";
+    const fbCol=fb>0.01?"#4ECDC4":fb<-0.01?"#FF6B9D":"#484f58";
+    html+=`<div class="fam-block">
+      <div class="fam-hdr">
+        <div class="fam-emoji" style="border:2px solid ${fc}44">${fam.emoji}</div>
+        <div class="fam-info">
+          <div class="fam-name" style="color:${fc}">${esc(fam.name)}</div>
+          <div class="fam-sub">${members.length} чел${hasExp?` · <span style="color:${fbCol};font-weight:700">${fbTxt}</span>`:""}
+          </div>
+        </div>
+        <button class="rm" onclick="removeFamily(${fam.id})">×</button>
+      </div>
+      <div class="fam-members">`;
+    members.forEach(p=>{
+      const pb=pBal[p.id]||0;
+      const pTxt=hasExp?(pb>0.01?`+€${pb.toFixed(2)}`:pb<-0.01?`-€${Math.abs(pb).toFixed(2)}`:"±0"):"";
+      const pCol=pb>0.01?"#4ECDC4":pb<-0.01?"#FF6B9D":"#484f58";
+      html+=`<div class="mem-row">
+        <div class="mini-av" style="background:${fc}22;border:1.5px solid ${fc};color:${fc}">${p.name[0].toUpperCase()}</div>
+        <div class="mem-name">${esc(p.name)}</div>
+        ${hasExp?`<div class="mem-bal" style="color:${pCol}">${pTxt}</div>`:""}
+        <button class="rm" onclick="removePerson(${p.id})">×</button>
+      </div>`;
+    });
+    html+=`</div>
+      <div class="add-mem-row">
+        <input class="mini-in" id="min-${fam.id}" placeholder="Добавить человека..." onkeydown="if(event.key==='Enter')addMember(${fam.id})"/>
+        <button class="mini-add" onclick="addMember(${fam.id})">+</button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+function renderExpenses(){
+  const el=document.getElementById("tab-expenses");
+  if(!people.length){el.innerHTML=`<div class="empty"><div class="empty-e">👥</div><div>Сначала добавь участников</div></div>`;return}
+  let html=`<button class="add-exp-btn" onclick="openModal()">+ Добавить расход</button>`;
+  if(!expenses.length){html+=`<div class="empty"><div class="empty-e">💸</div><div>Нет расходов — добавь первый!</div></div>`}
+  else expenses.forEach(exp=>{
+    const payer=getPerson(exp.paidBy);
+    const c=payer?personColor(exp.paidBy):"#888";
+    const payFam=payer?getFamily(payer.familyId):null;
+    const tags=exp.participants.map(xid=>{const pp=getPerson(xid);if(!pp)return"";const tc=personColor(xid);return`<span class="tag" style="background:${tc}22;color:${tc}">${esc(pp.name)}</span>`}).join("");
+    html+=`<div class="exp-card">
+      <div class="exp-ic">${exp.cat.e}</div>
+      <div class="exp-body">
+        <div class="exp-title">${esc(exp.title)}</div>
+        <div class="exp-meta">Платил: <span style="color:${c};font-weight:600">${esc(payer?.name||"?")}${payFam?` · ${esc(payFam.name)}`:""}</span> · ${exp.participants.length} чел. · €${(exp.amount/exp.participants.length).toFixed(2)}/чел</div>
+        <div class="exp-tags">${tags}</div>
+      </div>
+      <div class="exp-r">
+        <div class="exp-amt">€${exp.amount.toFixed(2)}</div>
+        <button class="rm" onclick="removeExpense(${exp.id})">×</button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+function renderSettle(){
+  const el=document.getElementById("tab-settle");
+  const {pBal,fBal,txns}=settle();
+  if(!expenses.length){el.innerHTML=`<div class="empty"><div class="empty-e">✅</div><div>Добавь расходы чтобы увидеть расчёт</div></div>`;return}
+  if(!txns.length){
+    el.innerHTML=`<div style="text-align:center;padding:40px 20px;background:#161b22;border-radius:16px;border:1px solid #21262d">
+      <div style="font-size:48px;margin-bottom:12px">🎉</div>
+      <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:20px">Все в балансе!</div>
+      <div style="color:#484f58;margin-top:8px">Никто никому не должен</div>
+    </div>`;return;
+  }
+  let html=`<div class="slabel">${txns.length} перевод${txns.length===1?"":"а"} между семьями</div>`;
+  txns.forEach(t=>{
+    const ff=getFamily(t.from),tf=getFamily(t.to);
+    const fc=famColor(t.from),tc=famColor(t.to);
+    html+=`<div class="settle-card">
+      <div class="pbadge">
+        <div class="bav" style="background:${fc}22;border:2px solid ${fc};color:${fc};font-size:17px">${ff?.emoji||"👤"}</div>
+        <div class="bname">${esc(ff?.name||"")}</div>
+      </div>
+      <div class="settle-mid"><div class="settle-arr">→</div><div class="settle-amt">€${t.amount.toFixed(2)}</div></div>
+      <div class="pbadge r">
+        <div class="bav r" style="background:${tc}22;border:2px solid ${tc};color:${tc};font-size:17px">${tf?.emoji||"👤"}</div>
+        <div class="bname">${esc(tf?.name||"")}</div>
+      </div>
+    </div>`;
+  });
+  html+=`<div class="slabel" style="margin-top:14px">Баланс по семьям</div>`;
+  families.forEach((fam,fi)=>{
+    const fc=COLORS[fi%COLORS.length];
+    const fb=fBal[fam.id]||0;
+    const vc=fb>0.01?"#4ECDC4":fb<-0.01?"#FF6B9D":"#484f58";
+    const vt=fb>0.01?`+€${fb.toFixed(2)}`:fb<-0.01?`-€${Math.abs(fb).toFixed(2)}`:"±€0";
+    const members=famMembers(fam.id);
+    html+=`<div class="fam-settle">
+      <div class="fam-settle-hdr">
+        <span style="font-size:17px">${fam.emoji}</span>
+        <div style="flex:1;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;color:${fc}">${esc(fam.name)}</div>
+        <div style="font-family:'Outfit',sans-serif;font-weight:900;font-size:16px;color:${vc}">${vt}</div>
+      </div>
+      <div class="fam-settle-body">`;
+    members.forEach(p=>{
+      const pb=pBal[p.id]||0;
+      const pc=pb>0.01?"#4ECDC4":pb<-0.01?"#FF6B9D":"#484f58";
+      const pt=pb>0.01?`+€${pb.toFixed(2)}`:pb<-0.01?`-€${Math.abs(pb).toFixed(2)}`:"±€0";
+      html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+        <div class="mini-av" style="width:24px;height:24px;font-size:10px;background:${fc}22;border:1.5px solid ${fc};color:${fc}">${p.name[0].toUpperCase()}</div>
+        <div style="flex:1;font-size:13px;color:#8b949e">${esc(p.name)}</div>
+        <div style="font-size:13px;font-weight:700;color:${pc}">${pt}</div>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  });
+  el.innerHTML=html;
+}
+
+// ---- ACTIONS ----
+function switchTab(tab){
+  currentTab=tab;
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  ["people","expenses","settle"].forEach(t=>document.getElementById("tab-"+t).style.display=t===tab?"block":"none");
+  render();
+}
+
+function addFamily(){
+  const inp=document.getElementById("fam-in");
+  const name=inp?.value.trim();if(!name)return;
+  families.push({id:fid++,name,emoji:FAM_EMOJIS[families.length%FAM_EMOJIS.length]});
+  render();
+}
+
+function removeFamily(id){
+  const mids=famMembers(id).map(p=>p.id);
+  families=families.filter(f=>f.id!==id);
+  people=people.filter(p=>p.familyId!==id);
+  expenses=expenses.map(e=>({...e,participants:e.participants.filter(x=>!mids.includes(x)),paidBy:mids.includes(e.paidBy)?(people[0]?.id||null):e.paidBy}));
+  render();
+}
+
+function addMember(famId){
+  const inp=document.getElementById(`min-${famId}`);
+  const name=inp?.value.trim();if(!name)return;
+  people.push({id:pid++,familyId:famId,name});
+  render();
+}
+
+function removePerson(id){
+  people=people.filter(p=>p.id!==id);
+  expenses=expenses.map(e=>({...e,participants:e.participants.filter(x=>x!==id),paidBy:e.paidBy===id?(people[0]?.id||null):e.paidBy}));
+  render();
+}
+
+function removeExpense(id){expenses=expenses.filter(e=>e.id!==id);render()}
+
+// ---- MODAL ----
+function openModal(){
+  fCat=CATS[0];fPaidBy=people[0]?.id||null;fParts=people.map(p=>p.id);
+  document.getElementById("f-title").value="";document.getElementById("f-amount").value="";
+  renderCatChips();renderPaidByChips();renderPartSection();updatePP();
+  document.getElementById("modal").style.display="flex";
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function renderCatChips(){
+  document.getElementById("cat-chips").innerHTML=CATS.map(c=>
+    `<button class="chip" style="${fCat.e===c.e?`border-color:#4ECDC4;background:#4ECDC411`:``}" onclick="selectCat('${c.e}')">${c.e}</button>`
+  ).join("");
+}
+function renderPaidByChips(){
+  let html="";
+  families.forEach((fam,fi)=>{
+    const fc=COLORS[fi%COLORS.length];
+    famMembers(fam.id).forEach(p=>{
+      const sel=fPaidBy===p.id;
+      html+=`<button class="chip" style="${sel?`border-color:${fc};background:${fc}22;color:${fc};font-weight:700`:``}" onclick="selPaidBy(${p.id})">${esc(p.name)}</button>`;
+    });
+  });
+  document.getElementById("paidby-chips").innerHTML=html;
+}
+function renderPartSection(){
+  let html="";
+  families.forEach((fam,fi)=>{
+    const fc=COLORS[fi%COLORS.length];
+    const mems=famMembers(fam.id);if(!mems.length)return;
+    const allSel=mems.every(p=>fParts.includes(p.id));
+    html+=`<div style="margin-bottom:11px">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+        <span style="font-size:13px">${fam.emoji}</span>
+        <span style="font-size:11px;font-weight:700;color:${fc}">${esc(fam.name)}</span>
+        <button onclick="toggleFam(${fam.id})" style="margin-left:auto;font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid ${fc};background:${allSel?fc+"22":"transparent"};color:${fc};font-weight:700">${allSel?"✓ Все":"Все"}</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">`;
+    mems.forEach(p=>{
+      const sel=fParts.includes(p.id);
+      html+=`<button class="chip" style="${sel?`border-color:${fc};background:${fc}22;color:${fc};font-weight:700`:``}" onclick="togglePart(${p.id})">${sel?"✓ ":""}${esc(p.name)}</button>`;
+    });
+    html+=`</div></div>`;
+  });
+  document.getElementById("part-section").innerHTML=html;updatePP();
+}
+
+function selectCat(e){fCat=CATS.find(c=>c.e===e)||CATS[0];renderCatChips()}
+function selPaidBy(id){fPaidBy=id;renderPaidByChips()}
+function togglePart(id){fParts=fParts.includes(id)?fParts.filter(x=>x!==id):[...fParts,id];renderPartSection()}
+function toggleFam(fid){
+  const mids=famMembers(fid).map(p=>p.id);
+  const allSel=mids.every(id=>fParts.includes(id));
+  fParts=allSel?fParts.filter(id=>!mids.includes(id)):[...new Set([...fParts,...mids])];
+  renderPartSection();
+}
+function updatePP(){
+  const amt=parseFloat(document.getElementById("f-amount")?.value)||0;
+  const n=fParts.length;
+  const el=document.getElementById("pp");
+  if(el)el.textContent=n>0&&amt>0?`€${(amt/n).toFixed(2)} с каждого`:"";
+}
+function saveExpense(){
+  const title=document.getElementById("f-title").value.trim();
+  const amount=parseFloat(document.getElementById("f-amount").value);
+  if(!title||!amount||!fPaidBy||!fParts.length)return;
+  expenses.push({id:eid++,title,amount,cat:fCat,paidBy:fPaidBy,participants:[...fParts]});
+  closeModal();render();
+}
+
+// ---- TRIP NAME ----
+function openTripModal(){document.getElementById("trip-name-in").value=tripName;document.getElementById("trip-modal").style.display="flex"}
+function closeTripModal(){document.getElementById("trip-modal").style.display="none"}
+function saveTripName(){tripName=document.getElementById("trip-name-in").value.trim();closeTripModal();render()}
+function newTrip(){
+  if(!confirm("Начать новую поездку? Текущие данные будут удалены."))return;
+  tripName="";families=[];people=[];expenses=[];fid=pid=eid=1;render();
+}
+
+// ---- SAVE / SHARE ----
+function getState(){
+  return{tripName,families,people,expenses,fid,pid,eid};
+}
+function loadState(s){
+  tripName=s.tripName||"";
+  families=s.families||[];
+  people=s.people||[];
+  expenses=s.expenses||[];
+  fid=s.fid||1;pid=s.pid||1;eid=s.eid||1;
+}
+
+function saveLocal(){
+  try{
+    localStorage.setItem("tripsettle",JSON.stringify(getState()));
+    toast("💾 Сохранено!");
+  }catch(e){toast("Ошибка сохранения")}
+}
+
+function shareLink(){
+  try{
+    const data=JSON.stringify(getState());
+    const b64=btoa(unescape(encodeURIComponent(data)));
+    const url=location.href.split("?")[0]+"?d="+b64;
+    document.getElementById("share-url").value=url;
+    document.getElementById("share-modal").style.display="flex";
+  }catch(e){toast("Ошибка создания ссылки")}
+}
+function closeShareModal(){document.getElementById("share-modal").style.display="none"}
+function copyLink(){
+  const url=document.getElementById("share-url").value;
+  if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>toast("✅ Скопировано!"))}
+  else{document.getElementById("share-url").select();document.execCommand("copy");toast("✅ Скопировано!")}
+}
+
+function toast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg;el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),2500);
+}
+
+// ---- INIT ----
+function init(){
+  // Load from URL first
+  const params=new URLSearchParams(location.search);
+  const d=params.get("d");
+  if(d){
+    try{
+      const data=JSON.parse(decodeURIComponent(escape(atob(d))));
+      loadState(data);
+      toast("✈️ Поездка загружена!");
+    }catch(e){console.warn("URL parse error",e)}
+  } else {
+    // Load from localStorage
+    try{
+      const saved=localStorage.getItem("tripsettle");
+      if(saved)loadState(JSON.parse(saved));
+    }catch(e){}
+  }
+  render();
+}
+
+function esc(str){return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+
+init();
+</script>
+</body>
+</html>
