@@ -8,7 +8,6 @@
   <meta name="apple-mobile-web-app-title" content="TripSettle"/>
   <meta name="theme-color" content="#0d1117"/>
   <title>TripSettle ✈️</title>
-  <base href="/tripsettle/">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -19,11 +18,8 @@
     ::placeholder{color:#484f58}
     ::-webkit-scrollbar{width:4px}
     ::-webkit-scrollbar-thumb{background:#30363d;border-radius:4px}
-
     #app{min-height:100vh;display:flex;flex-direction:column;align-items:center}
     .wrap{width:100%;max-width:460px;padding-bottom:110px}
-
-    /* HEADER */
     .header{padding:52px 20px 20px;border-bottom:1px solid #21262d;position:relative;overflow:hidden}
     .hglow{position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#4ECDC430 0%,transparent 70%);pointer-events:none}
     .htag{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:#4ECDC4;text-transform:uppercase;margin-bottom:6px}
@@ -37,19 +33,12 @@
     .stat-l{font-size:10px;color:#484f58;margin-bottom:2px}
     .stat-v{font-family:'Outfit',sans-serif;font-weight:800;font-size:15px}
     .stat-v.ac{color:#4ECDC4}
-
-    /* SHARE BAR */
     .share-bar{display:flex;gap:8px;padding:12px 20px;border-bottom:1px solid #21262d;background:#0d1117}
     .share-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;font-weight:700;font-size:13px;border:1.5px solid}
-
-    /* TABS */
     .tabs{display:flex;border-bottom:1px solid #21262d;background:#0d1117;position:sticky;top:0;z-index:10}
     .tab{flex:1;padding:12px 4px;background:none;border:none;border-bottom:2px solid transparent;color:#484f58;font-weight:500;font-size:12px;transition:all .2s}
     .tab.active{color:#4ECDC4;border-bottom-color:#4ECDC4;font-weight:700}
-
     .content{padding:18px 16px}
-
-    /* FAMILY BLOCK */
     .fam-block{background:#161b22;border-radius:16px;border:1px solid #21262d;margin-bottom:12px;overflow:hidden}
     .fam-hdr{display:flex;align-items:center;gap:10px;padding:13px 13px 8px}
     .fam-emoji{font-size:20px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:#21262d;border-radius:10px;flex-shrink:0}
@@ -65,12 +54,9 @@
     .add-mem-row{display:flex;gap:6px;padding:0 13px 13px}
     .mini-in{flex:1;background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:8px 12px;color:#e6edf3;font-size:13px}
     .mini-add{background:#4ECDC422;color:#4ECDC4;border:1px solid #4ECDC444;border-radius:10px;padding:8px 14px;font-weight:800;font-size:16px}
-
     .in-row{display:flex;gap:8px;margin-bottom:14px}
     .main-in{flex:1;background:#161b22;border:1px solid #30363d;border-radius:12px;padding:11px 14px;color:#e6edf3;font-size:14px}
     .add-btn{background:#4ECDC4;color:#0d1117;border-radius:12px;padding:11px 18px;font-weight:800;font-size:18px}
-
-    /* EXPENSE CARD */
     .exp-card{background:#161b22;border-radius:14px;border:1px solid #21262d;padding:13px;display:flex;gap:10px;align-items:flex-start;margin-bottom:9px}
     .exp-ic{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:#21262d;border-radius:11px;flex-shrink:0}
     .exp-body{flex:1;min-width:0}
@@ -81,8 +67,6 @@
     .exp-r{text-align:right;flex-shrink:0}
     .exp-amt{font-family:'Outfit',sans-serif;font-weight:800;font-size:17px}
     .add-exp-btn{width:100%;padding:12px;border-radius:13px;background:#4ECDC411;border:1.5px dashed #4ECDC455;color:#4ECDC4;font-weight:700;font-size:14px;margin-bottom:14px}
-
-    /* SETTLE */
     .settle-card{background:#161b22;border-radius:16px;border:1px solid #21262d;padding:15px;display:flex;align-items:center;gap:10px;margin-bottom:9px}
     .settle-mid{flex:1;text-align:center}
     .settle-arr{color:#484f58;font-size:16px;margin-bottom:1px}
@@ -95,12 +79,9 @@
     .bav{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:17px;text-transform:uppercase;margin-bottom:3px}
     .bav.r{margin-left:auto}
     .bname{font-size:11px;font-weight:600;color:#484f58;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px}
-
     .empty{text-align:center;padding:44px 20px;color:#484f58}
     .empty-e{font-size:38px;margin-bottom:10px}
     .slabel{font-size:11px;font-weight:700;color:#484f58;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
-
-    /* MODAL */
     .overlay{position:fixed;inset:0;background:#000c;display:flex;align-items:flex-end;justify-content:center;z-index:100}
     .modal{width:100%;max-width:460px;background:#161b22;border-radius:20px 20px 0 0;padding:22px 18px 50px;border:1px solid #21262d;max-height:92vh;overflow-y:auto}
     .modal-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:19px;margin-bottom:18px}
@@ -112,12 +93,8 @@
     .cbtn{flex:1;padding:13px;border-radius:12px;border:1px solid #30363d;background:none;color:#484f58;font-weight:600;font-size:14px}
     .sbtn{flex:2;padding:13px;border-radius:12px;background:#4ECDC4;color:#0d1117;font-weight:800;font-size:14px;border:none}
     .pp{font-size:12px;color:#484f58;margin-bottom:14px;margin-top:-8px}
-
-    /* TOAST */
-    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#4ECDC4;color:#0d1117;padding:10px 20px;border-radius:99px;font-weight:700;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;white-space:nowrap}
+    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#4ECDC4;color:#0d1117;padding:10px 20px;border-radius:99px;font-weight:700;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none}
     .toast.show{opacity:1}
-
-    /* TRIP MODAL */
     .trip-modal{position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
     .trip-box{background:#161b22;border-radius:20px;padding:24px;width:100%;max-width:380px;border:1px solid #21262d}
   </style>
@@ -137,19 +114,16 @@
         <div class="stat"><div class="stat-l">Итого</div><div class="stat-v ac" id="s-tot">€0</div></div>
       </div>
     </div>
-
     <div class="share-bar">
       <button class="share-btn" style="color:#4ECDC4;border-color:#4ECDC433;background:#4ECDC410" onclick="shareLink()">🔗 Поделиться</button>
       <button class="share-btn" style="color:#6BCB77;border-color:#6BCB7733;background:#6BCB7710" onclick="saveLocal()">💾 Сохранить</button>
       <button class="share-btn" style="color:#FFD93D;border-color:#FFD93D33;background:#FFD93D10" onclick="newTrip()">✈️ Новая</button>
     </div>
-
     <div class="tabs">
       <button class="tab active" data-tab="people" onclick="switchTab('people')">👨‍👩‍👧 Люди</button>
       <button class="tab" data-tab="expenses" onclick="switchTab('expenses')">💸 Расходы</button>
       <button class="tab" data-tab="settle" onclick="switchTab('settle')">✅ Итог</button>
     </div>
-
     <div class="content">
       <div id="tab-people"></div>
       <div id="tab-expenses" style="display:none"></div>
@@ -196,7 +170,7 @@
 <div class="trip-modal" id="share-modal" style="display:none">
   <div class="trip-box">
     <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:17px;margin-bottom:8px">🔗 Поделиться поездкой</div>
-    <div style="font-size:13px;color:#484f58;margin-bottom:14px">Отправь эту ссылку — друзья увидят все расходы и расчёты</div>
+    <div style="font-size:13px;color:#484f58;margin-bottom:14px">Отправь эту ссылку друзьям — они увидят все расходы и расчёты</div>
     <textarea id="share-url" readonly style="width:100%;background:#0d1117;border:1px solid #30363d;border-radius:11px;padding:11px;color:#4ECDC4;font-size:12px;resize:none;height:80px;word-break:break-all"></textarea>
     <div style="display:flex;gap:8px;margin-top:10px">
       <button class="cbtn" onclick="closeShareModal()">Закрыть</button>
@@ -212,18 +186,16 @@ const COLORS=["#4ECDC4","#FF6B9D","#FFD93D","#6BCB77","#4D96FF","#FF922B","#CC5D
 const CATS=[{e:"🏨",l:"Отель"},{e:"🚗",l:"Машина"},{e:"⛽",l:"Бензин"},{e:"🍕",l:"Еда"},{e:"🎟️",l:"Активности"},{e:"✈️",l:"Перелёт"},{e:"🛒",l:"Покупки"},{e:"🍺",l:"Бар"}];
 const FAM_EMOJIS=["👨‍👩‍👧","👫","🧑‍🤝‍🧑","👨‍👦","👩‍👧","🧑","🏠","⛺","👴","👩"];
 
-let tripName="", families=[], people=[], expenses=[];
+let tripName="",families=[],people=[],expenses=[];
 let fid=1,pid=1,eid=1,currentTab="people";
 let fCat=CATS[0],fPaidBy=null,fParts=[];
 
-// ---- COLORS ----
 function famColor(id){const i=families.findIndex(f=>f.id===id);return i>=0?COLORS[i%COLORS.length]:"#888"}
 function personColor(id){const p=people.find(x=>x.id===id);return p?famColor(p.familyId):"#888"}
 function getPerson(id){return people.find(p=>p.id===id)}
 function getFamily(id){return families.find(f=>f.id===id)}
 function famMembers(fid){return people.filter(p=>p.familyId===fid)}
 
-// ---- SETTLE ----
 function settle(){
   const pBal={};people.forEach(p=>{pBal[p.id]=0});
   expenses.forEach(exp=>{
@@ -249,7 +221,6 @@ function settle(){
   return{pBal,fBal,txns};
 }
 
-// ---- RENDER ----
 function render(){
   updateStats();updateTripDisplay();
   if(currentTab==="people")renderPeople();
@@ -270,7 +241,7 @@ function updateTripDisplay(){
   const el=document.getElementById("trip-display");
   if(tripName){
     el.innerHTML=`<div class="htrip-name" onclick="openTripModal()">📍 ${esc(tripName)}</div><div class="htrip-edit" onclick="openTripModal()">✏️</div>`;
-  } else {
+  }else{
     el.innerHTML=`<div class="htrip-edit" onclick="openTripModal()" style="color:#4ECDC4;font-size:13px;font-weight:600">+ Назвать поездку</div>`;
   }
 }
@@ -407,7 +378,6 @@ function renderSettle(){
   el.innerHTML=html;
 }
 
-// ---- ACTIONS ----
 function switchTab(tab){
   currentTab=tab;
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
@@ -419,6 +389,7 @@ function addFamily(){
   const inp=document.getElementById("fam-in");
   const name=inp?.value.trim();if(!name)return;
   families.push({id:fid++,name,emoji:FAM_EMOJIS[families.length%FAM_EMOJIS.length]});
+  inp.value="";
   render();
 }
 
@@ -434,6 +405,7 @@ function addMember(famId){
   const inp=document.getElementById(`min-${famId}`);
   const name=inp?.value.trim();if(!name)return;
   people.push({id:pid++,familyId:famId,name});
+  inp.value="";
   render();
 }
 
@@ -445,7 +417,6 @@ function removePerson(id){
 
 function removeExpense(id){expenses=expenses.filter(e=>e.id!==id);render()}
 
-// ---- MODAL ----
 function openModal(){
   fCat=CATS[0];fPaidBy=people[0]?.id||null;fParts=people.map(p=>p.id);
   document.getElementById("f-title").value="";document.getElementById("f-amount").value="";
@@ -515,19 +486,18 @@ function saveExpense(){
   closeModal();render();
 }
 
-// ---- TRIP NAME ----
 function openTripModal(){document.getElementById("trip-name-in").value=tripName;document.getElementById("trip-modal").style.display="flex"}
 function closeTripModal(){document.getElementById("trip-modal").style.display="none"}
 function saveTripName(){tripName=document.getElementById("trip-name-in").value.trim();closeTripModal();render()}
 function newTrip(){
   if(!confirm("Начать новую поездку? Текущие данные будут удалены."))return;
-  tripName="";families=[];people=[];expenses=[];fid=pid=eid=1;render();
+  tripName="";families=[];people=[];expenses=[];fid=pid=eid=1;
+  // Clear hash
+  history.replaceState(null,null,location.pathname);
+  render();
 }
 
-// ---- SAVE / SHARE ----
-function getState(){
-  return{tripName,families,people,expenses,fid,pid,eid};
-}
+function getState(){return{tripName,families,people,expenses,fid,pid,eid}}
 function loadState(s){
   tripName=s.tripName||"";
   families=s.families||[];
@@ -547,7 +517,8 @@ function shareLink(){
   try{
     const data=JSON.stringify(getState());
     const b64=btoa(unescape(encodeURIComponent(data)));
-    const url=location.href.split("?")[0]+"?d="+b64;
+    // Use hash (#) instead of query string (?) — works on GitHub Pages
+    const url=location.origin+location.pathname+"#d="+b64;
     document.getElementById("share-url").value=url;
     document.getElementById("share-modal").style.display="flex";
   }catch(e){toast("Ошибка создания ссылки")}
@@ -555,8 +526,17 @@ function shareLink(){
 function closeShareModal(){document.getElementById("share-modal").style.display="none"}
 function copyLink(){
   const url=document.getElementById("share-url").value;
-  if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>toast("✅ Скопировано!"))}
-  else{document.getElementById("share-url").select();document.execCommand("copy");toast("✅ Скопировано!")}
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>toast("✅ Скопировано!")).catch(()=>{
+      document.getElementById("share-url").select();
+      document.execCommand("copy");
+      toast("✅ Скопировано!");
+    });
+  } else {
+    document.getElementById("share-url").select();
+    document.execCommand("copy");
+    toast("✅ Скопировано!");
+  }
 }
 
 function toast(msg){
@@ -565,17 +545,16 @@ function toast(msg){
   setTimeout(()=>el.classList.remove("show"),2500);
 }
 
-// ---- INIT ----
 function init(){
-  // Load from URL first
-  const params=new URLSearchParams(location.search);
-  const d=params.get("d");
-  if(d){
+  // Load from HASH first (#d=...) — works on GitHub Pages!
+  const hash=location.hash;
+  if(hash&&hash.startsWith("#d=")){
     try{
-      const data=JSON.parse(decodeURIComponent(escape(atob(d))));
+      const b64=hash.slice(3);
+      const data=JSON.parse(decodeURIComponent(escape(atob(b64))));
       loadState(data);
       toast("✈️ Поездка загружена!");
-    }catch(e){console.warn("URL parse error",e)}
+    }catch(e){console.warn("Hash parse error",e)}
   } else {
     // Load from localStorage
     try{
